@@ -1,0 +1,4 @@
+﻿    <Configuration>
+        <PVWAURL>https://za01comp01.acme.corp</PVWAURL>
+        <AuthenticationType>CyberArk</AuthenticationType>
+    </Configuration>
