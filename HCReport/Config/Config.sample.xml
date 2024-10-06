@@ -1,0 +1,10 @@
+﻿    <Configuration>
+        <CustomerName>ACME</CustomerName>
+        <PVWAURL>https://za01comp01.acme.corp</PVWAURL>
+        <AuthenticationType>CyberArk</AuthenticationType>
+        <CPMUser>CPM_COMP01</CPMUser>
+        <Servers>
+        <Server>za01vault01</Server>
+    <Server>za01comp01</Server>
+    </Servers>
+    </Configuration>

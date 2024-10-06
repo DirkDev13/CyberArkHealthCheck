@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>CyberArkHCReport</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #6A9AB0;
+        }
+        p{
+            font-family: Arial, serif;
+        }
+        .Top-Container{
+            background-color: #001f3f;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            justify-content: center;
+            margin-bottom: 1px; 
+            height: auto;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: bold;
+            padding-left: 10px;
+            }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        th, td {
+            border: 1px solid #6A9AB0;
+            padding: 8px;
+        }
+        th {
+            background-color: #EAD8B1;
+            text-align: center;
+        }
+        td {
+            text-align: center;
+        }
+        .overview-container, .serverdetails-container{
+            text-align: center;
+            border-bottom: 5px solid #3A6D8C;
+            margin-top: 5px;
+        }
+        .componets-container{
+            text-align: left;
+        }
+        .details-container{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            grid-gap: 10px; 
+            padding: 1px;
+            text-align: left;
+        }
+        .server-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            grid-gap: 1px; 
+            padding: 1px;
+            text-align: left;
+        }
+        .backup, .recordings, .server{
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            gap: 5px;
+            padding: 5px;
+        }
+        .collapsible {
+            background-color: #001F3F;
+            color: #6A9AB0;
+            cursor: pointer;
+            padding: 10px;
+            font-size: 20px;
+            border: none;
+            outline: none;
+            margin-top: 1px;
+            width: 100%;
+        }
+        .active, .collapsible:hover {
+            background-color: #003060;
+        }
+        .content {
+            display: none;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="Top-Container">
+        <h1>CyberArk Health Check Report</h1>
+        <h2><!--CustomerName--></h2>
+        <p>Generated on: <!--ReportDate--></p>
+    </div>
+    <div class="overview-container">
+        <h2>Overview</h2>
+        <div class="componets-container">
+            <h3>Components</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hostname</th>
+                        <th>Last Check</th>
+                        <th>Components</th>
+                        <th>Services Check</th>
+                        <th>Disk Check (+15GB)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <!--SummaryTable-->
+                </tbody>
+            </table>  
+        </div>
+        <div class="details-container">
+            <div class="backup">
+                <h3>Backup</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Backup Type</th>
+                            <th>Last Backup Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <!--BackupTable-->
+                    </tbody>
+                </table>
+            </div>
+            <div class="recordings">
+                <h3>Recording Safes</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Safe</th>
+                            <th>Max Size (GB)</th>
+                            <th>Used (GB)</th>
+                            <th>% Free</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <!--RecordingsTable-->
+                    </tbody>
+                </table>   
+            </div>
+        </div>
+    </div>
+    <div class="serverdetails-container">
+        <h2>Server Details</h2>
+        <div class="server-container">
+        <!--ServerDetails-->
+        </div>
+    </div>
+</body>
+</html>
