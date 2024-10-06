@@ -5,11 +5,30 @@
 A Project to setup Health Checks of the CyberArk Components
 
 ## Table of Contents
+- [Requirements](#Requirements)
 - [Installation](#installation)
+    -[Vault](#Vault)
+    -[Components](#Components)
+    -[HCReport](#HCReport)
 - [Usage](#usage)
-- [Features](#features)
+- [Example](#Example)
 - [Contact](#contact)
 
-## Installation
-Instructions on how to install or set up your project locally. Include any prerequisites, such as software requirements.
+## Requirements
+Put all the requirements here
+## Setup
+Below is the instructions on how to setup the 3 parts of the Health Check
+## Vault
+
+## Components
+
+## HC Report
+
+## Usage
+
+## Example
+There is an example Report in the main folder 
+
+## Contact
+
 
