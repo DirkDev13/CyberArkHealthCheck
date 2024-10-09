@@ -257,7 +257,7 @@ Description: Menu function for the setup of the Report Prerequisites
 
 function Read-MainMenu {
     do {
-        clear
+        Clear-Host
         Write-Host "`n####################################################################################" -ForegroundColor Yellow
         Write-Host "Main Menu" -ForegroundColor Yellow
         Write-Host "####################################################################################`n" -ForegroundColor Yellow
@@ -277,7 +277,7 @@ function Read-MainMenu {
             "4" {Check-HCAccount}
             "5" {Set-ScheduledTask}
             "6" {
-                clear
+                Clear-Host
                 Confirm-psPAS
                 New-CredFile -ExportFilePath ..\Config
                 New-ConfigFile
