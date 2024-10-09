@@ -35,7 +35,7 @@ function Confirm-psPAS {
     if ($psPASCheck){
         Write-Host "The module $ModuleName is installed with the correct version." -ForegroundColor Green
     }else{
-        $InstallPrompt = Read-Host "The module $ModuleName is not installed or the version is incorrect, do you want to install it now? (yes/no)"
+        Read-Host "The module $ModuleName is not installed or the version is incorrect, installing it now"
          # Try to install the module
         try {
             Write-Host "Installing $ModuleName version $DesiredVersion..."
@@ -159,8 +159,6 @@ function Read-CredFile {
         return $null
     }
 }
-
-
 <####################################################################################################################
 Function Name: Import-HCPlatform
 Description: Import the HC Platform to CyberArk
@@ -245,7 +243,7 @@ Function Add-HCAccounts{
     }
     $psCredential = Read-CredFile -CFPath ..\Config\User.xml
     #Validate that the serverlist is correct before onboarding
-    clear
+    Clear-Host
     Write-Host "Creating an account of each server in the list below:"
     $config.Servers
     $CreateAccounts = Read-Host "Do you want to continue (yes\no)"
@@ -343,7 +341,7 @@ Description: Menu function to setup the Health Check Accounts in CyberArk
 ###################################################################################################################>
 function Read-HCAccountMenu{
     do {
-        clear
+        Clear-Host
         Write-Host "`nMenu" -ForegroundColor Cyan
         Write-Host "1. Import the Health Check Platform" -ForegroundColor Cyan
         Write-Host "2. Setup the Health Check Safe & Safe Members" -ForegroundColor Cyan
@@ -357,7 +355,7 @@ function Read-HCAccountMenu{
             "2" {Add-HCSafe}
             "3" {Add-HCAccounts}
             "4" {
-                clear
+                Clear-Host
                 Write-Host "Performing All steps"-ForegroundColor Green
                 Import-HCPlatform
                 Add-HCSafe
@@ -483,7 +481,7 @@ Description: Menu function for the setup of the Report Prerequisites
 
 function Read-MainMenu {
     do {
-        clear
+        Clear-Host
         Write-Host "`n####################################################################################" -ForegroundColor Yellow
         Write-Host "Main Menu" -ForegroundColor Yellow
         Write-Host "####################################################################################`n" -ForegroundColor Yellow
@@ -505,7 +503,7 @@ function Read-MainMenu {
             "5" {New-HCUser}
             "6" {Set-HCTemplate}
             "7" {
-                clear
+                Clear-Host
                 Write-Host "Performing All steps"-ForegroundColor Green
                 Confirm-psPAS
                 New-CredFile -ExportFilePath ..\Config
