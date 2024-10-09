@@ -70,6 +70,9 @@ The Component Setup consits of 5 parts
 5. Setting up the scheduled task to pull and push data once a day at 5am.
 
 There is an setup script located in the Setup folder that can be run to perform all the above steps
+NB! When you do the setup make sure to create place the Component-HealthCheck folder in the C:\Scripts location, otherwise you need to update the scheduled task xml. The following parameter need to be updated in the scheduled task xml
+- Arguments
+- Working Directory
 
 ## Usage
 Run the HCReport.ps1 script once everything has been setup to generate a report.

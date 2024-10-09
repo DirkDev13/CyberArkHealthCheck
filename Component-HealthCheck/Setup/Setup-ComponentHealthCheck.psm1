@@ -35,7 +35,7 @@ function Confirm-psPAS {
     if ($psPASCheck){
         Write-Host "The module $ModuleName is installed with the correct version." -ForegroundColor Green
     }else{
-        $InstallPrompt = Read-Host "The module $ModuleName is not installed or the version is incorrect, do you want to install it now? (yes/no)"
+        Read-Host "The module $ModuleName is not installed or the version is incorrect, Installing it now"
          # Try to install the module
         try {
             Write-Host "Installing $ModuleName version $DesiredVersion..."
@@ -202,6 +202,7 @@ function Set-ScheduledTask {
         Write-Host "Powershell path is valid" -ForegroundColor Green
     }else{
         Write-Host "Invalid Powershell Path, update manually and register task" -ForegroundColor Red
+        pause
         return
     }
 
@@ -218,10 +219,12 @@ function Set-ScheduledTask {
             Write-Host "The file path to Component-HealtCheck.ps1 is valid" -ForegroundColor Green
         } else {
             Write-Host "The file path to Component-HealtCheck.ps1 is invalid, update manually and register task" -ForegroundColor Red
+            Pause
             return
         }
     } else {
         Write-Host "No valid file path found in the arguments.manually register task" -ForegroundColor Red
+        Pause
         return
     }
     
