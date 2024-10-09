@@ -52,6 +52,7 @@ The HCReport Setup consits of 6 Parts
 There is a setup script located in the Setup folder that can be run to perform all the above steps.
 
 ### Vault
+NB! You need to unzip the Modules in the prerequisites folder before you begin
 The Vault Setup consits of 5 parts
 1. Setting up the Required PowerShell Modules
 2. Creating the Credential file that will be used to logon to the Vault
@@ -61,7 +62,12 @@ The Vault Setup consits of 5 parts
 
 There is an setup script located in the Setup folder that can be run to perform all the above steps.
 
+NB! When you do the setup make sure to create place the Component-HealthCheck folder in the C:\Scripts location, otherwise you need to update the scheduled task xml. The following parameter need to be updated in the scheduled task xml
+- Arguments
+- Working Directory
+
 ### Components
+NB! You need to unzip the Modules in the prerequisites folder before you begin
 The Component Setup consits of 5 parts
 1. Setting up the Required PowerShell Modules
 2. Creating the Credential file that will be used to logon to the Vault
@@ -69,7 +75,8 @@ The Component Setup consits of 5 parts
 4. Validating that there is an HCAccount onboarded for this Vault Server to push data to
 5. Setting up the scheduled task to pull and push data once a day at 5am.
 
-There is an setup script located in the Setup folder that can be run to perform all the above steps
+There is an setup script located in the Setup folder that can be run to perform all the above steps.
+
 NB! When you do the setup make sure to create place the Component-HealthCheck folder in the C:\Scripts location, otherwise you need to update the scheduled task xml. The following parameter need to be updated in the scheduled task xml
 - Arguments
 - Working Directory

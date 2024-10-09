@@ -35,7 +35,7 @@ function Confirm-poShPACLI {
     if ($psPASCheck){
         Write-Host "The module $ModuleName is installed with the correct version." -ForegroundColor Green
     }else{
-        $InstallPrompt = Read-Host "The module $ModuleName is not installed or the version is incorrect, do you want to install it now? (yes/no)"
+        Read-Host "The module $ModuleName is not installed or the version is incorrect, Installing it now"
          # Try to install the module
         try {
             Write-Host "Installing $ModuleName version $DesiredVersion..."
@@ -60,7 +60,7 @@ function Confirm-psPAS {
     if ($psPASCheck){
         Write-Host "The module $ModuleName is installed with the correct version." -ForegroundColor Green
     }else{
-        $InstallPrompt = Read-Host "The module $ModuleName is not installed or the version is incorrect, do you want to install it now? (yes/no)"
+        Read-Host "The module $ModuleName is not installed or the version is incorrect, Installing it now"
          # Try to install the module
         try {
             Write-Host "Installing $ModuleName version $DesiredVersion..."
@@ -316,7 +316,7 @@ function Read-MainMenu {
         Write-Host "2. Setup Credential File" -ForegroundColor Yellow
         Write-Host "3. Setup PACLI" -ForegroundColor Yellow
         Write-Host "4. Validate HealthCheck Account for Server" -ForegroundColor Yellow
-        Write-Host "6. Setup Scheduled Task" -ForegroundColor Yellow
+        Write-Host "5. Setup Scheduled Task" -ForegroundColor Yellow
         Write-Host "6. Perform All Steps" -ForegroundColor Yellow
         Write-Host "0. Exit" -ForegroundColor Yellow
         $choice = Read-Host "Select an option"
