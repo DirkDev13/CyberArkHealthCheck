@@ -250,7 +250,6 @@ function Set-ScheduledTask {
     pause
 }
 
-
 <####################################################################################################################
 Function Name: Read-MainMenu
 Description: Menu function for the setup of the Report Prerequisites
