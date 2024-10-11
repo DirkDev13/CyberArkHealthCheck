@@ -202,8 +202,8 @@ Function Get-RecordingsSafes {
         $RecordingSafes += [PSCustomObject]@{
             'SafeName' = $Safe.Safename
             'MaxSize' = [math]::Round($Details.MaxSize / 1024,2)
-            'Used' = [math]::Round($Details.CurrSize / 1024,2)
-            'Free' = [math]::Round((($Details.MaxSize - $Details.CurrSize) / ($Details.MaxSize))*100,2)
+            'Used' = [math]::Round($Details.CurrSize / 1048576,2)
+            'Free' = [math]::Round((($Details.MaxSize - ($Details.CurrSize/1024)) / ($Details.MaxSize))*100,2)
         }
     }
     Stop-PVPacli

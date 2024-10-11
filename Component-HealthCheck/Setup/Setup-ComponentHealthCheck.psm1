@@ -233,6 +233,7 @@ function Set-ScheduledTask {
         Write-Host "Working Directory path is valid" -ForegroundColor Green
     }else{
         Write-Host "Invalid Working Directory , update manually and register task" -ForegroundColor Red
+        pause
         return
     }
 
@@ -262,7 +263,7 @@ function Read-MainMenu {
         Write-Host "Main Menu" -ForegroundColor Yellow
         Write-Host "####################################################################################`n" -ForegroundColor Yellow
         Write-Host "1. Check the psPAS module" -ForegroundColor Yellow
-        Write-Host "3. Setup Credential File" -ForegroundColor Yellow
+        Write-Host "2. Setup Credential File" -ForegroundColor Yellow
         Write-Host "3. Setup Config File" -ForegroundColor Yellow
         Write-Host "4. Validate HCAccount for Server" -ForegroundColor Yellow
         Write-Host "5. Setup Scheduled Task" -ForegroundColor Yellow

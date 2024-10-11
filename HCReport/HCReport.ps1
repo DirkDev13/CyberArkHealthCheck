@@ -12,8 +12,8 @@ $pscredential = Read-CredFile -CFPath .\Config\User.xml
 $config = Read-Config -configFilePath .\Config\Config.xml
 $Safe = "CA-HealthCheck"
 $Date = Get-Date
-$templatePath = "C:\Scripts\HealthChecks\HCReport\Reports\Template\$($config.CustomerName)-HCReport.html"
-$outputPath = "C:\Scripts\HealthChecks\HCReport\Reports\$($config.CustomerName)-CyberArkHCreport-$(Get-Date -f yyyy-MM-dd).html"
+$templatePath = ".\Reports\Template\$($config.CustomerName)-HCReport.html"
+$outputPath = ".\Reports\$($config.CustomerName)-CyberArkHCreport-$(Get-Date -f yyyy-MM-dd).html"
 $HCData = @()
 
 #region Pull the HC Data
