@@ -174,7 +174,7 @@ function Import-HCPlatform {
         Write-Host "Logging onto $($config.PVWAURL)/PasswordVault as $($psCredential.UserName)" -ForegroundColor Green
         New-PASSession -Credential $psCredential -type $config.AuthenticationType -BaseURI $config.PVWAURL -concurrentSession $true -SkipCertificateCheck -SkipVersionCheck
         Write-Host "Importing Health Check Platform" -ForegroundColor Green
-        Import-PASPlatform -ImportFile .\Prerequisites\CyberArk-HealthCheck.zip | Out-Null
+        Import-PASPlatform -ImportFile "..\Prerequisites\CyberArk-HealthCheck.zip" | Out-Null
         Close-PASSession
         Write-Host "The Health Check Platform was imported Successfully"
     }catch{
@@ -376,9 +376,9 @@ function Set-HCTemplate{
     Write-Host "Reading config file and creating template..." -ForegroundColor Green
     try{
     $config = Read-Config -configFilePath ..\Config\Config.xml
-    $templatePath = "C:\Scripts\HealthChecks\HCReport\Prerequisites\HCTemplate.html"
+    $templatePath = "..\Prerequisites\HCTemplate.html"
     $template = Get-Content -Path $templatePath -Raw
-    $outputPath = "C:\Scripts\HealthChecks\HCReport\Reports\Template\$($config.CustomerName)-HCReport.html"
+    $outputPath = "..\Reports\Template\$($config.CustomerName)-HCReport.html"
     $htmlContent = @()
 
     $htmlReport = $template -replace '<!--CustomerName-->', $config.CustomerName
