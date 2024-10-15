@@ -45,6 +45,8 @@ if(($RawHCData.Services | Where-Object {$_.DisplayName -eq 'PrivateArk Server'})
     $Components = "Primary Vault"
     $totalServices = ($RawHCData.Services | Where-Object {$_.DisplayName -ne 'CyberArk Vault Disaster Recovery'}).Count
     $runningServices = ($RawHCData.Services | Where-Object { $_.DisplayName -ne 'CyberArk Vault Disaster Recovery' -and $_.Status -eq 'Running' }).Count
+    #Pull the PSMRecording Safes Information
+    $RecordingSafes = Get-RecordingsSafes
 
 }elseif(($RawHCData.Services | Where-Object {$_.DisplayName -eq 'CyberArk Vault Disaster Recovery'}).Status -eq "Running"){
     $Components = "DR Vault"
@@ -53,8 +55,7 @@ if(($RawHCData.Services | Where-Object {$_.DisplayName -eq 'PrivateArk Server'})
 }
 
 
-#Pull the PSMRecording Safes Information
-$RecordingSafes = Get-RecordingsSafes
+
 
 $HCSummary += [PSCustomObject]@{
     'Components' = $Components
