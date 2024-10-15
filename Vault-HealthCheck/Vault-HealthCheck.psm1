@@ -20,6 +20,29 @@ function Read-CredFile {
         return $null
     }
 }
+<####################################################################################################################
+Function Name: Read-Config
+Description: Reads the contents of the Config.xml file
+###################################################################################################################>
+function Read-Config {
+    param (
+        [string]$configFilePath
+    )
+    #Check if the config file exists
+    if (-not (Test-Path $configFilePath)) {
+        Write-Host "Config file not found"
+        return $null
+    }
+    #Load the XML file
+    [xml]$configXml = Get-Content -Path $configFilePath
+    #Extract values from the XML
+    $Vault = $configXml.Configuration.VAULT
+    #Return the extracted Values as a hashtable
+    return @{
+        VAULT = $Vault
+    }
+    
+}
 
 <####################################################################################################################
 Function Name: Get-SystemInfo
@@ -219,13 +242,15 @@ function Set-HCPasswordPACLI {
         [Parameter(Mandatory = $true)]
         [System.Security.SecureString]$SecureString
     )
+
     $Hostname = $env:computername
+    $config = Read-Config -configFilePath .\Config\Config.xml
     $SessionID =  Get-Random -Minimum 100 -Maximum 999
     $pscredential = Read-CredFile -CFPath .\Config\User.xml
     $Safe = "CA-HealthCheck"
     
     Start-PVPacli -sessionID $SessionID
-    New-PVVaultDefinition -vault "VAULT" -address $Hostname
+    New-PVVaultDefinition -vault "VAULT" -address $config.VAULT
     Connect-PVVault -user $pscredential.UserName -password $pscredential.Password
     Open-PVSafe -safe $Safe | Out-Null
     $Files = Find-PVFile -safe $Safe -folder Root
