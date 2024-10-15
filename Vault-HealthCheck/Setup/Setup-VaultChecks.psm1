@@ -35,7 +35,7 @@ function Confirm-poShPACLI {
     if ($psPASCheck){
         Write-Host "The module $ModuleName is installed with the correct version." -ForegroundColor Green
     }else{
-        Read-Host "The module $ModuleName is not installed or the version is incorrect, Installing it now"
+        Write-Host "The module $ModuleName is not installed or the version is incorrect, Installing it now" -ForegroundColor Green
          # Try to install the module
         try {
             Write-Host "Installing $ModuleName version $DesiredVersion..."
@@ -47,69 +47,6 @@ function Confirm-poShPACLI {
         }
     }
     pause
-}
-<####################################################################################################################
-Function Name: Confirm-psPAS
-Description: Check if the desired version of psPAS is installed
-###################################################################################################################>
-function Confirm-psPAS {
-    Write-Host "Checking psPAS module" -ForegroundColor Green 
-    $ModuleName = "psPAS"
-    $DesiredVersion = "6.4.85"
-    $psPASCheck = Test-RequiredModule -ModuleName $ModuleName -DesiredVersion $DesiredVersion
-    if ($psPASCheck){
-        Write-Host "The module $ModuleName is installed with the correct version." -ForegroundColor Green
-    }else{
-        Read-Host "The module $ModuleName is not installed or the version is incorrect, Installing it now"
-         # Try to install the module
-        try {
-            Write-Host "Installing $ModuleName version $DesiredVersion..."
-            Install-Module -Name $ModuleName -RequiredVersion $DesiredVersion -Force -Scope CurrentUser
-            Write-Host "$ModuleName version $DesiredVersion has been installed successfully." -ForegroundColor Green
-        } catch {
-            Write-Host "Couldn't install $ModuleName from Repo, installing it manually..." -ForegroundColor DarkYellow
-            Copy-Item -Path "..\Prerequisites\psPAS" -Destination "C:\Program Files\WindowsPowerShell\Modules\psPAS" -Recurse -Force
-            Copy-Item -Path "..\Prerequisites\IdentityCommand" -Destination "C:\Program Files\WindowsPowerShell\Modules\IdentityCommand" -Recurse -Force
-            Write-Host "$ModuleName version $DesiredVersion has been installed successfully." -ForegroundColor Green
-        }
-    }
-    pause
-}
-<####################################################################################################################
-Function Name: Create-ConfigFile
-Description: Creates the config file that will be used 
-###################################################################################################################>
-# Prompt for user inputs
-function New-ConfigFile{
-    $PVWAURL = Read-Host "Specify the PVWAURL"
-    $AuthenticationType = Read-Host "Specify the Authentication Method (Case-sensitive; e.g., CyberArk, LDAP, RADIUS, Windows, PKI, PKIPN)"
-    $CPMUser = Read-Host "Specify the Name of the CPMUser (PasswordManager)"
-    $Servers = Read-Host "List the servers (separate each server with a comma, e.g., server1,server2,server3)"
-    $Servers = $Servers -split ","
-
-    # Validate the Authentication Method
-    $validAuthMethods = @("CyberArk", "LDAP", "RADIUS", "Windows", "PKI", "PKIPN")
-    if ($validAuthMethods -notcontains $AuthenticationType) {
-        Write-Host "Invalid Authentication Method. Please specify one of the following: CyberArk, LDAP, RADIUS, Windows, PKI, PKIPN" -ForegroundColor Red
-        exit
-    }
-    # Convert servers to XML format
-    $serversXml = ""
-    foreach ($server in $Servers) {
-        $serversXml += "    <Server>$server</Server>`n"
-    }
-    # Create the Config.xml file
-    $configXml = @"
-    <Configuration>
-        <PVWAURL>$PVWAURL</PVWAURL>
-        <AuthenticationType>$AuthenticationType</AuthenticationType>
-        <CPMUser>$CPMUser</CPMUser>
-        <Servers>
-    $serversXml    </Servers>
-    </Configuration>
-"@
-    $configXml | Out-File -FilePath ".\Config\Config.xml" -Encoding UTF8
-    Write-Host "Configuration file 'Config.xml' has been created successfully." -ForegroundColor Green
 }
 <####################################################################################################################
 Function Name: Read-Config
@@ -127,16 +64,10 @@ function Read-Config {
     # Load the XML file
     [xml]$configXml = Get-Content -Path $configFilePath
     # Extract values from the XML
-    $PVWAURL = $configXml.Configuration.PVWAURL
-    $AuthenticationType = $configXml.Configuration.AuthenticationType
-    $CPMUser = $configXml.Configuration.CPMUser
-    $Servers = $configXml.Configuration.Servers.Server
+    $Vault = $configXml.Configuration.VAULT
     # Return the extracted values as a hashtable
     return @{
-        PVWAURL = $PVWAURL
-        AuthenticationType = $AuthenticationType
-        CPMUser = $CPMUser
-        Servers = $Servers
+        VAULT = $Vault
     }
 }
 <####################################################################################################################
@@ -190,6 +121,14 @@ function Set-PACLI{
     }catch{
         Write-Host "Error Couldn't set PACLI Executable path, set it manually" -ForegroundColor Red
     }
+    $Vault = Read-Host "Specify the Active Vault IP"
+    $configXml = @"
+    <Configuration>
+        <VAULT>$Vault</VAULT>
+    </Configuration>
+"@
+    $configXml | Out-File -FilePath "..\Config\Config.xml" -Encoding utf8
+    Write-Host "Configuration File 'Config.xml' has been created successfully" -ForegroundColor Green
     pause
 }
 <####################################################################################################################
@@ -197,6 +136,7 @@ Function Name: Check-HCAccount
 Description: Check that there is an existing HCAccount for this Server 
 ###################################################################################################################>
 function Check-HCAccount{
+    $config = Read-Config -configFilePath ..\Config\Config.xml
     $Hostname = $env:computername
     $SessionID =  Get-Random -Minimum 100 -Maximum 999
     $pscredential = Read-CredFile -CFPath ..\Config\User.xml
@@ -205,7 +145,7 @@ function Check-HCAccount{
     Write-Host "Checking if Health-Check Account exists for $($Hostname)..." -ForegroundColor Green
     try{
         Start-PVPacli -sessionID $SessionID
-        New-PVVaultDefinition -vault "VAULT" -address $Hostname
+        New-PVVaultDefinition -vault "VAULT" -address $config.VAULT
         Connect-PVVault -user $pscredential.UserName -password $pscredential.Password
 
         Open-PVSafe -safe $Safe | Out-Null
@@ -257,6 +197,7 @@ function Set-ScheduledTask {
         Write-Host "Powershell path is valid" -ForegroundColor Green
     }else{
         Write-Host "Invalid Powershell Path, update manually and register task" -ForegroundColor Red
+        pause
         return
     }
 
@@ -273,10 +214,12 @@ function Set-ScheduledTask {
             Write-Host "The file path to Vault-HealtCheck.ps1 is valid" -ForegroundColor Green
         } else {
             Write-Host "The file path to Vault-HealtCheck.ps1 is invalid, update manually and register task" -ForegroundColor Red
+            pause
             return
         }
     } else {
         Write-Host "No valid file path found in the arguments.manually register task" -ForegroundColor Red
+        pause
         return
     }
     
@@ -285,6 +228,7 @@ function Set-ScheduledTask {
         Write-Host "Working Directory path is valid" -ForegroundColor Green
     }else{
         Write-Host "Invalid Working Directory , update manually and register task" -ForegroundColor Red
+        pause
         return
     }
 
@@ -300,8 +244,6 @@ function Set-ScheduledTask {
      
     pause
 }
-
-
 <####################################################################################################################
 Function Name: Read-MainMenu
 Description: Menu function for the setup of the VaultCheck Prerequisites
@@ -321,10 +263,7 @@ function Read-MainMenu {
         Write-Host "0. Exit" -ForegroundColor Yellow
         $choice = Read-Host "Select an option"
         switch ($choice) {
-            "1" {
-                Confirm-poShPACLI
-                Confirm-psPAS
-            }
+            "1" {Confirm-poShPACLI}
             "2" {New-CredFile -ExportFilePath ..\Config}
             "3" {Set-PACLI}
             "4" {Check-HCAccount}
