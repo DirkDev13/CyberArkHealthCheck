@@ -54,9 +54,6 @@ if(($RawHCData.Services | Where-Object {$_.DisplayName -eq 'PrivateArk Server'})
     $runningServices = ($RawHCData.Services | Where-Object { $_.DisplayName -ne 'PrivateArk Server' -and $_.DisplayName -ne 'Cyber-Ark Event Notification Engine' -and $_.Status -eq 'Running' }).Count
 }
 
-
-
-
 $HCSummary += [PSCustomObject]@{
     'Components' = $Components
     'RunningServices' = "$runningServices/$totalServices"
