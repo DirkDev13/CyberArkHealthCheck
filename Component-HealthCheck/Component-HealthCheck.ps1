@@ -71,7 +71,7 @@ $HCData += [PSCustomObject]@{
     'Summary' = $HCSummary
     'RawData' = $RawHCData
 }
-$HCData = $HCData | ConvertTo-Json -Depth 3
+$HCData = $HCData | ConvertTo-Json -Depth 4
 #endregion
 
 #region Endcode the Data

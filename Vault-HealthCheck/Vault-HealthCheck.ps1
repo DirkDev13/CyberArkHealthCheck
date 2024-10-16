@@ -65,7 +65,7 @@ $HCData += [PSCustomObject]@{
     'RawData' = $RawHCData
     'PSMRecordingSafes' = $RecordingSafes
 }
-$HCData = $HCData | ConvertTo-Json -Depth 3
+$HCData = $HCData | ConvertTo-Json -Depth 4
 #endregion
 
 #region Endcode the Data
